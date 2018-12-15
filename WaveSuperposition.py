@@ -26,6 +26,7 @@ waveList = [Wave(amplitude=2, period=2*PI, direction=1),
 class WaveSuperposition(WaveGraphBase):
     def __init__(self, granularity=1024, x_range=4 * PI, x_offset=0, y_range=6, y_offset=0, time_factor=0.1, waves=[], slider_data=[], checkbox_data=[]):
         super().__init__(granularity, x_range, x_offset, y_range, y_offset, time_factor, waves, slider_data, checkbox_data)
+        self.checkboxes_ticked = self.checkbox.get_status()
 
     def update(self, event=None):
         self.waves[0].amplitude = self.sliders[0].val
@@ -42,19 +43,15 @@ class WaveSuperposition(WaveGraphBase):
         #self.waves[1].show_full_wave = not self.checkboxes_ticked[3]
 
     def animate(self, i):
-        if self.checkboxes_ticked[0]:
-            self.y_data[0] = self.waves[0].get_y_array(i * self.time_factor, self.x_data, dynamic_show=[-self.x_range - self.waves[0].get_length() / 2, -self.x_range])
-        else:
+        self.y_data[0] = self.waves[0].get_y_array(i * self.time_factor, self.x_data, dynamic_show=[-self.x_range - self.waves[0].get_length() / 2, -self.x_range])
+        self.y_data[1] = self.waves[1].get_y_array(i * self.time_factor, self.x_data, dynamic_show=[self.x_range, self.x_range + self.waves[1].get_length() / 2])
+        self.y_data[2] = [x + y for x, y in zip(self.y_data[0], self.y_data[1])]
+
+        if not self.checkboxes_ticked[0]:
             self.y_data[0] = [0] * self.granularity
-
-        if self.checkboxes_ticked[1]:
-            self.y_data[1] = self.waves[1].get_y_array(i * self.time_factor, self.x_data, dynamic_show=[self.x_range, self.x_range + self.waves[1].get_length() / 2])
-        else:
+        if not self.checkboxes_ticked[1]:
             self.y_data[1] = [0] * self.granularity
-
-        if self.checkboxes_ticked[2]:
-            self.y_data[2] = [x + y for x, y in zip(self.y_data[0], self.y_data[1])]
-        else:
+        if not self.checkboxes_ticked[2]:
             self.y_data[2] = [0] * self.granularity
 
         self.lines[0].set_data(self.x_data, self.y_data[0])

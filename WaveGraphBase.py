@@ -64,7 +64,7 @@ class WaveGraphBase(ABC):
         return self.patches
 
     def start(self):
-        self.animation = animation.FuncAnimation(self.fig, self.animate, init_func=self.init, frames=300, repeat=True, interval=20, blit=True)
+        self.animation = animation.FuncAnimation(self.fig, self.animate, init_func=self.init, frames=999999, repeat=True, interval=20, blit=True)
         plt.show()
 
     @abstractmethod

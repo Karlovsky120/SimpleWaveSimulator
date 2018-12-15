@@ -30,6 +30,7 @@ class WavesChangingMedium(WaveGraphBase):
         super().__init__(granularity, x_range, x_offset, y_range, y_offset, time_factor, waves, slider_data, checkbox_data)
         self.tension = tension
         self.mass_density = mass_density
+        self.checkboxes_ticked = self.checkbox.get_status()
 
     def update(self, event=None):
         self.waves[0].amplitude = self.sliders[0].val
@@ -46,37 +47,31 @@ class WavesChangingMedium(WaveGraphBase):
         self.waves[1] = self.waves[0].get_reflected_wave(self.tension, self.mass_density)
         self.waves[2] = self.waves[0].get_transmitted_wave(self.tension, self.mass_density)
 
-        if self.checkboxes_ticked[0]:
-            self.y_data[0] = self.waves[0].get_y_array(i * self.time_factor, self.x_data,
-                                                       static_show=[-self.x_range, 0],
-                                                       dynamic_show=[0, self.waves[0].get_length() / 2],
-                                                       dynamic_offset=-(int(self.x_range/self.waves[0].get_length())+1)*
-                                                                      self.waves[0].get_length())
-        else:
+        self.y_data[0] = self.waves[0].get_y_array(i * self.time_factor, self.x_data,
+                                                   static_show=[-self.x_range, 0],
+                                                   dynamic_show=[0, self.waves[0].get_length() / 2],
+                                                   dynamic_offset=-(int(self.x_range/self.waves[0].get_length())+1)*
+                                                                  self.waves[0].get_length())
+        self.y_data[1] = self.waves[1].get_y_array(i * self.time_factor, self.x_data,
+                                                   static_show=[-self.x_range, 0],
+                                                   dynamic_show=[-self.waves[1].get_length() / 2, 0],
+                                                   dynamic_offset=(int(self.x_range/self.waves[1].get_length())+1)*
+                                                                  self.waves[1].get_length())
+        self.y_data[2] = self.waves[2].get_y_array(i * self.time_factor, self.x_data,
+                                                   static_show=[0, self.x_range],
+                                                   dynamic_show=[0, self.waves[2].get_length() / 2],
+                                                   dynamic_offset=-(int(self.x_range/self.waves[0].get_length())+1)*
+                                                                  self.waves[0].get_length()*
+                                                                  self.waves[0].get_velocity()/self.waves[2].get_velocity())
+        self.y_data[3] = [x + y for x, y in zip(self.y_data[0], self.y_data[1])]
+
+        if not self.checkboxes_ticked[0]:
             self.y_data[0] = [0] * self.granularity
-
-        if self.checkboxes_ticked[1]:
-            self.y_data[1] = self.waves[1].get_y_array(i * self.time_factor, self.x_data,
-                                                       static_show=[-self.x_range, 0],
-                                                       dynamic_show=[-self.waves[1].get_length() / 2, 0],
-                                                       dynamic_offset=(int(self.x_range/self.waves[1].get_length())+1)*
-                                                                      self.waves[1].get_length())
-        else:
+        if not self.checkboxes_ticked[1]:
             self.y_data[1] = [0] * self.granularity
-
-        if self.checkboxes_ticked[2]:
-            self.y_data[2] = self.waves[2].get_y_array(i * self.time_factor, self.x_data,
-                                                       static_show=[0, self.x_range],
-                                                       dynamic_show=[0, self.waves[2].get_length() / 2],
-                                                       dynamic_offset=-(int(self.x_range/self.waves[0].get_length())+1)*
-                                                                      self.waves[0].get_length()*
-                                                                      self.waves[0].get_velocity()/self.waves[2].get_velocity())
-        else:
+        if not self.checkboxes_ticked[2]:
             self.y_data[2] = [0] * self.granularity
-
-        if self.checkboxes_ticked[3]:
-            self.y_data[3] = [x + y for x, y in zip(self.y_data[0], self.y_data[1])]
-        else:
+        if not self.checkboxes_ticked[3]:
             self.y_data[3] = [0] * self.granularity
 
         self.lines[0].set_data(self.x_data, self.y_data[0])
