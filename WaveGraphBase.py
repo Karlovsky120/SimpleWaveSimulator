@@ -29,7 +29,7 @@ class WaveGraphBase(ABC):
         self.graph_cell.set(xlim=(-self.x_range - self.x_offset, self.x_range - self.x_offset),
                             ylim=(-self.y_range - self.y_offset, self.y_range - self.y_offset))
 
-        self.x_data = np.linspace(-self.x_range - self.x_offset, self.x_range - self.x_offset, self.granularity)
+        self.x_data = np.linspace(-3*self.x_range - 3*self.x_offset, 3*self.x_range - 3*self.x_offset, self.granularity)
         self.y_data = [[]] * len(self.waves)
 
         self.lines = [plt.plot([], [])[0] for _ in range(len(self.waves))]
