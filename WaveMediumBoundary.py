@@ -26,8 +26,8 @@ waveList = [Wave(amplitude=2, period=2*PI, direction=1),
 
 
 class WavesChangingMedium(WaveGraphBase):
-    def __init__(self, granularity=1024, x_range=4 * PI, x_offset=0, y_range=6, y_offset=0, time_factor=0.1, waves=[], slider_data=[], checkbox_data=[], tension=2, mass_density=0.5):
-        super().__init__(granularity, x_range, x_offset, y_range, y_offset, time_factor, waves, slider_data, checkbox_data)
+    def __init__(self, name='Waves medium boundary', granularity=1024, x_range=4 * PI, x_offset=0, y_range=6, y_offset=0, time_factor=0.1, waves=[], slider_data=[], checkbox_data=[], tension=2, mass_density=0.5):
+        super().__init__(name, granularity, x_range, x_offset, y_range, y_offset, time_factor, waves, slider_data, checkbox_data)
         self.tension = tension
         self.mass_density = mass_density
         self.checkboxes_ticked = self.checkbox.get_status()
