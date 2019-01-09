@@ -10,7 +10,7 @@ PI = np.pi
 
 
 class WaveGraphBase(ABC):
-    def __init__(self, name, granularity, x_range, x_offset, y_range, y_offset, time_factor, waves, slider_data, checkbox_data):
+    def __init__(self, name, granularity, x_range, x_offset, y_range, y_offset, time_factor, line_thickness, waves, slider_data, checkbox_data):
         self.granularity = granularity
         self.x_range = x_range
         self.x_offset = x_offset
@@ -20,6 +20,7 @@ class WaveGraphBase(ABC):
         self.slider_data = slider_data
         self.checkbox_data = checkbox_data
         self.time_factor = time_factor
+        self.line_thickness = line_thickness
         self.checkboxes_ticked = [True] * len(self.waves)
 
         self.fig = plt.figure(figsize=(16, 9))
