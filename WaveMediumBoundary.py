@@ -67,10 +67,10 @@ class WavesChangingMedium(WaveGraphBase):
         self.y_data[3] = [x + y for x, y in zip(self.y_data[0], self.y_data[1])]
 
         for j in range(len(self.y_data)):
-            if not self.checkboxes_ticked[j]:
-                plt.setp(self.lines[j], linewidth=0)
-            else:
+            if self.checkboxes_ticked[j]:
                 plt.setp(self.lines[j], linewidth=self.line_thickness)
+            else:
+                plt.setp(self.lines[j], linewidth=0)
 
             self.lines[j].set_data(self.x_data, self.y_data[j])
 
