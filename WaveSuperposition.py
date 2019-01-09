@@ -25,7 +25,7 @@ waveList = [Wave(amplitude=2, period=2*PI, direction=1),
 
 
 class WaveSuperposition(WaveGraphBase):
-    def __init__(self, name='Wave superposition', granularity=1024, x_range=4 * PI, x_offset=0, y_range=6, y_offset=0, time_factor=0.1, line_thickness=5, waves=[], slider_data=[], checkbox_data=[]):
+    def __init__(self, name='Wave superposition', granularity=512, x_range=4 * PI, x_offset=0, y_range=6, y_offset=0, time_factor=0.1, line_thickness=5, waves=[], slider_data=[], checkbox_data=[]):
         super().__init__(name, granularity, x_range, x_offset, y_range, y_offset, time_factor, line_thickness, waves, slider_data, checkbox_data)
         self.checkboxes_ticked = self.checkbox.get_status()
 
@@ -49,10 +49,11 @@ class WaveSuperposition(WaveGraphBase):
 
         for j in range(len(self.y_data)):
             if not self.checkboxes_ticked[j]:
-                self.y_data[j] = [0] * self.granularity
+                plt.setp(self.lines[j], linewidth=0)
+            else:
+                plt.setp(self.lines[j], linewidth=self.line_thickness)
 
             self.lines[j].set_data(self.x_data, self.y_data[j])
-            plt.setp(self.lines[j], linewidth=self.line_thickness)
 
         return self.patches
 
