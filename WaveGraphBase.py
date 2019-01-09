@@ -33,7 +33,7 @@ class WaveGraphBase(ABC):
         self.x_data = np.linspace(-3*self.x_range - 3*self.x_offset, 3*self.x_range - 3*self.x_offset, self.granularity)
         self.y_data = [[]] * len(self.waves)
 
-        self.lines = [plt.plot([], [])[0] for _ in range(len(self.waves))]
+        self.lines = [plt.plot([], [], linewidth=5)[0] for _ in range(len(self.waves))]
         self.patches = self.lines
 
         self.control_cell = self.main_grid[1, :]
