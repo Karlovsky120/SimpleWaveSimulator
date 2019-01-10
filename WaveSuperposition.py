@@ -25,9 +25,8 @@ waveList = [Wave(amplitude=2, period=2*PI, direction=1),
 
 
 class WaveSuperposition(WaveGraphBase):
-    def __init__(self, name='Wave superposition', granularity=512, x_range=4 * PI, x_offset=0, y_range=6, y_offset=0, time_factor=0.1, line_thickness=5, waves=[], slider_data=[], checkbox_data=[]):
+    def __init__(self, name='Wave superposition', granularity=2048, x_range=4 * PI, x_offset=0, y_range=6, y_offset=0, time_factor=0.1, line_thickness=5, waves=[], slider_data=[], checkbox_data=[]):
         super().__init__(name, granularity, x_range, x_offset, y_range, y_offset, time_factor, line_thickness, waves, slider_data, checkbox_data)
-        self.checkboxes_ticked = self.checkbox.get_status()
 
     def update(self, event=None):
         self.waves[0].amplitude = self.sliders[0].val
@@ -43,8 +42,8 @@ class WaveSuperposition(WaveGraphBase):
         self.checkboxes_ticked = self.checkbox.get_status()
 
     def animate(self, i):
-        self.y_data[0] = self.waves[0].get_y_array(i * self.time_factor, self.x_data, dynamic_show=[-self.x_range - self.waves[0].get_length() / 2, -self.x_range])
-        self.y_data[1] = self.waves[1].get_y_array(i * self.time_factor, self.x_data, dynamic_show=[self.x_range, self.x_range + self.waves[1].get_length() / 2])
+        self.y_data[0] = self.waves[0].get_y_array(i * self.time_factor, self.x_data)
+        self.y_data[1] = self.waves[1].get_y_array(i * self.time_factor, self.x_data)
         self.y_data[2] = [x + y for x, y in zip(self.y_data[0], self.y_data[1])]
 
         for j in range(len(self.y_data)):

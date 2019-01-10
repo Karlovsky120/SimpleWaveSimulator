@@ -27,17 +27,13 @@ class Wave:
     def get_y_array_plain(self, time, x_array):
         return [self.amplitude * np.sin(self.get_omega() * (time - self.direction * x / self.get_velocity())) for x in x_array]
 
-    def get_y_array(self, time, x_array, static_show=[-99999, 99999], dynamic_show=[-99999, 99999], dynamic_offset=0):
+    def get_y_array(self, time, x_array, static_show=[-99999, 99999]):
         y_array = []
         velocity = self.get_velocity()
         omega = self.get_omega()
         for x in x_array:
             if x < static_show[0] or x > static_show[1]:
-                y_array.append(0)
-            elif (x - self.direction * velocity * time < dynamic_offset + dynamic_show[0]
-                  or x - self.direction * velocity * time > dynamic_offset + dynamic_show[1]) \
-                    and not self.show_full_wave:
-                y_array.append(0)
+                y_array.append(np.nan)
             else:
                 y_array.append(self.amplitude * np.sin(omega * (time - self.direction * x / velocity)))
         return y_array

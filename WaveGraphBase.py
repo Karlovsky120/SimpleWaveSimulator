@@ -21,7 +21,6 @@ class WaveGraphBase(ABC):
         self.checkbox_data = checkbox_data
         self.time_factor = time_factor
         self.line_thickness = line_thickness
-        self.checkboxes_ticked = [True] * len(self.waves)
 
         self.fig = plt.figure(figsize=(16, 9))
         self.fig.canvas.set_window_title(name)
@@ -47,6 +46,7 @@ class WaveGraphBase(ABC):
         self.checkbox = CheckButtons(self.checkboxAx, tuple(x["name"] for x in self.checkbox_data),
                                      tuple(x["init"] for x in self.checkbox_data))
         self.checkbox.on_clicked(self.update)
+        self.checkboxes_ticked = self.checkbox.get_status()
 
         self.slider_cell = self.control_grid[0, 2:6]
         self.slider_grid = gridspec.GridSpecFromSubplotSpec(len(self.slider_data), 1, self.slider_cell)
