@@ -28,15 +28,7 @@ class Wave:
         return [self.amplitude * np.sin(self.get_omega() * (time - self.direction * x / self.get_velocity())) for x in x_array]
 
     def get_y_array(self, time, x_array, static_show=[-99999, 99999]):
-        y_array = []
-        velocity = self.get_velocity()
-        omega = self.get_omega()
-        for x in x_array:
-            if x < static_show[0] or x > static_show[1]:
-                y_array.append(np.nan)
-            else:
-                y_array.append(self.amplitude * np.sin(omega * (time - self.direction * x / velocity)))
-        return y_array
+        return [self.amplitude * np.sin(self.get_omega() * (time - self.direction * x / self.get_velocity())) if static_show[0] <= x <= static_show[1] else np.nan for x in x_array]
 
     def get_reflected_wave(self, tension=1, mass_density=1):
         source_velocity = self.get_velocity()
